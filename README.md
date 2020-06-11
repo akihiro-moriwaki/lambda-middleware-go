@@ -2,10 +2,19 @@
 
 Lambda用のmiddleware
 
-```go
+```
+type EventHandler func(events.APIGatewayProxyRequest, string) (events.APIGatewayProxyResponse, error)
+
+func XxxxxxxxxHandler(h EventHandler) middleware.Handler {
+	return func(request events.APIGatewayProxyRequest) (interface{}, error) {
+        // 共通な処理をしてEventHandlerの引数として渡す
+		return h(request, "world")
+	}
+}
+
 func main() {
 	lambda.Start(
-		Middleware(
+		middleware.Middleware(
 			XxxxxxxxxHandler(
 				handler,
 			),
